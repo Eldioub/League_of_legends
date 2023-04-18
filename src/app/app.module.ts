@@ -9,12 +9,14 @@ import { ChampionService } from './services/champion.service';
 import { ChampionComponent } from './components/champion/champion.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { ChampionData } from './api/champion.data';
+import { ButtonRendererComponent } from './components/champion/button-renderer/button-renderer.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChampionComponent
+    ChampionComponent,
+    ButtonRendererComponent
   ],
   imports: [
     BrowserModule,
