@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from '../app.component';
+
 import { LoginComponent } from '../components/login/login.component';
 import { NotfoundComponent } from '../components/notfound/notfound.component';
 import { UserGuard } from '../guard/user.guard';
+import { ChampionComponent } from '../components/champion/champion.component';
+import { LoginGuard } from '../guard/login.guard';
 
 const routes :Routes = [
-    { path: '' , component: AppComponent, pathMatch: 'full'  },
-    { path: 'login', component: LoginComponent },
+    { path: '' , component: ChampionComponent , canActivate:[UserGuard]},
+    { path: 'login', component: LoginComponent , canActivate:[LoginGuard]},
     { path: 'notfound', component: NotfoundComponent },
     { path: '**', redirectTo: 'notfound' },
 ];

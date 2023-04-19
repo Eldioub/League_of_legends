@@ -11,17 +11,17 @@ export class AuthService{
 
   private apiUrl = '/api/users';
 
-  constructor(private http: HttpClient) {  }
+  constructor(private http: HttpClient) { this.getUsers();  }
 
-  // getUsers(){
-  //   return this.http.get<User[]>(this.apiUrl).subscribe(u => this.users = u);
-  // }
+  getUsers(){
+    return this.http.get<User[]>(this.apiUrl).subscribe(u => this.users = u);
+  }
 
-  login(email: string, password: string){
+  login(email: string, password: string){    
     if(! this.users.map(x => x.email).includes(email)){
       return false;
     } else {
-      if(! (this.users.filter(x => x.email === email).map(p => p.password).at(0) === password) ){
+      if(! (this.users.filter(x => x.email === email).map(p => p.password)[0] === password) ){
         return false;
       } else {
         return true;
