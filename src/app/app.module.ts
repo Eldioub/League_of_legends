@@ -23,6 +23,7 @@ import { LoginComponent } from './components/login/login.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { CreateChampionComponent, DialogModifyIChampion } from './components/create-champion/create-champion.component';
 import { MatTableModule } from '@angular/material/table';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatTableModule } from '@angular/material/table';
     DialogRemoveChampion,
     DialogModifyChampion,
     CreateChampionComponent,
-    DialogModifyIChampion
+    DialogModifyIChampion,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
