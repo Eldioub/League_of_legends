@@ -1,14 +1,36 @@
-<div class="container p-5">
-    <h3 class="text">La liste des champions :</h3>
-    <div>
-            <ag-grid-angular
-                style="width: 100%; height: 437px;"
-                class="ag-theme-alpine"
-                [rowData]="champions"
-                [columnDefs]="columnDefs"
-                [pagination]="true"
-                [paginationPageSize]="20"
-            >
-            </ag-grid-angular>
+<div class="cbody">
+    <div class="table">
+        <div class="container p-5">
+            <div class="table_cover">
+                <section class="table__header">
+                    <h1>La liste des champions</h1>
+                    <div class="input-group">
+                        <input type="search" placeholder="Recherche globale..." (change)="onSearch($event)">
+                    </div>
+                    <div class="export__file">
+                        <label for="export-file" class="export__file-btn" title="Exporter Fichier"></label>
+                        <input type="checkbox" id="export-file">
+                        <div class="export__file-options">
+                            <label>Exporter Comme &nbsp; &#10140;</label>
+                            <label for="export-file" (click)="exportAsCsv()">CSV <img src="../../../assets/images/csv.png" alt=""></label>
+                            <label for="export-file" (click)="exportAsExcel()">EXCEL <img src="../../../assets/images/excel.png" alt=""></label>
+                        </div>
+                    </div>
+                </section>
+                <div id="myGrid">
+                        <ag-grid-angular
+                            style="width: 100%; height: 30rem;"
+                            class="ag-theme-alpine-dark"
+                            [rowData]="champions"
+                            [columnDefs]="columnDefs"
+                            (gridReady)="onGridReady($event)"
+                            [pagination]="true"
+                            [paginationPageSize]="20"
+                            [suppressCellFocus]="true"
+                        >
+                        </ag-grid-angular>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
