@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ChampionService } from 'src/app/services/champion.service';
 import { ButtonRendererComponent } from './button-renderer/button-renderer.component';
 import { GridApi, GridReadyEvent } from 'ag-grid-community';
@@ -19,19 +19,48 @@ export class ChampionComponent implements OnInit {
   private gridApi!: GridApi;
   champions: any[] = [];
   columnDefs: any[] = [];
-  id: number = -1;
+  textSearch = '';
+  public localeText = {
+    // for filter panel
+    page: 'Page',
+    to: 'à',
+    of: 'de',
+    noRowsToShow: 'Aucune ligne à afficher',
+    filterOoo: 'Filtrer...',
+    applyFilter: 'Appliquer le filtre',
 
+    // for number filter
+    equals: 'Egal',
+    notEqual: 'Pas égal',
+    lessThan: 'Moins que',
+    greaterThan: 'Plus grand que',
+    blank: 'Vide' ,
+    notBlank: 'Non vide' ,
+    // for text filter
+    contains: 'Contient',
+    notContains: 'Ne contient pas',
+    startsWith: 'Commence par',
+    endsWith: 'Finit par',
+  }
   constructor(private championService: ChampionService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.championsResult();
+    //localStorage.setItem('genId', this.champions[this.champions.length-1].id + 1);
+    //const championsFromLocalStrorage = localStorage.getItem('champions');
+    // if(!championsFromLocalStrorage){
+    //   this.championsResult();
+    // } else {
+    //   this.champions = JSON.parse(championsFromLocalStrorage);
+    //   localStorage.setItem('genId', this.champions[this.champions.length-1].id + 1);
+    // }
     this.columnDefs = [
-      { field: 'id', sortable: true },
-      { field: 'title', sortable: true, filter: true },
-      { field: 'name', sortable: true, filter: true },
-      { field: 'key', sortable: true, filter: true },
+      { field: 'id', headerName: '#', sortable: true},
+      { field: 'title', headerName: 'Titre', sortable: true, filter: true},
+      { field: 'name', headerName: 'Nom', sortable: true, filter: true},
+      { field: 'key', headerName: 'Clé', sortable: true, filter: true},
       {
-        field: '',
+        headerName: 'Actions',
         cellRenderer: ButtonRendererComponent,
         cellRendererParams: {
           deleteClicked: (id: number, title: string) => {
@@ -42,12 +71,16 @@ export class ChampionComponent implements OnInit {
           },
           championGetter: (params: any) => params.data
         },
+        headerClass: 'text-center'
       }
     ];
   }
 
-  championsResult(): void {
-    this.championService.getChampions().subscribe(champions => this.champions = champions);
+  championsResult() {
+    this.championService.getChampions().subscribe(champions => {
+      this.champions = champions;
+      // localStorage.setItem('champions', JSON.stringify(this.champions));      
+    });
   }
 
   championResult(id: number) {
@@ -56,6 +89,8 @@ export class ChampionComponent implements OnInit {
 
   removeChampion(id: number) {
     this.championService.deleteChampion(id).subscribe(_ => {
+      // this.champions = this.champions.filter(c => c.id !== id);
+      // localStorage.setItem('champions', JSON.stringify(this.champions));
       this.championsResult();
     }, error => console.log(error));
   }
@@ -63,8 +98,8 @@ export class ChampionComponent implements OnInit {
   updateChampion(champion: Champion) {
     this.championService.updateChampion(champion).subscribe(_ => {
       this.championsResult();
-      console.log(champion);
-      
+      // this.champions = this.champions.map(c => c.id === champion.id ? champion : c);
+      // localStorage.setItem('champions', JSON.stringify(this.champions));
     }, error => console.log(error));
   }
 
@@ -78,11 +113,12 @@ export class ChampionComponent implements OnInit {
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
+    params.api.sizeColumnsToFit();
   }
 
-  onSearch($event: any) {
-    if ($event.target.value == '') this.championsResult();
-    const query: string = $event.target.value;
+  onSearch() {
+    if (this.textSearch == '') this.championsResult();
+    const query: string = this.textSearch;
     const filteredData = this.champions.filter((champion) => {
       return Object.values({ title: champion.title, key: champion.key, name: champion.name })
         .some(value => value.toString()
@@ -133,7 +169,7 @@ export class ChampionComponent implements OnInit {
       Veuillez supprimer le champion <span style="text-decoration: underline;">{{ data.title }}</span> ?
     </div>
     <div mat-dialog-actions>
-      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button mat-dialog-close>Annuler</button>
       <button mat-button mat-dialog-close cdkFocusInitial (click)="delete()">Supprimer</button>
     </div>
 `,
@@ -162,28 +198,28 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
         <mat-form-field style="width: 100%">
           <mat-label>Title</mat-label>
           <input type="text" matInput [formControl]="titleFormControl" [attr.errorStateMatcher]="matcher">
-          <mat-error *ngIf="titleFormControl.hasError('required')">title is <strong>required</strong></mat-error>
-        </mat-form-field>
-        <mat-form-field style="width: 100%">
-          <mat-label>Key</mat-label>
-          <input type="text" matInput [formControl]="keyFormControl" [attr.errorStateMatcher]="matcher">
-          <mat-error *ngIf="keyFormControl.hasError('required')">key is <strong>required</strong></mat-error>
+          <mat-error *ngIf="titleFormControl.hasError('required')">Titre est <strong>obligatoire</strong></mat-error>
         </mat-form-field>
         <mat-form-field style="width: 100%">
           <mat-label>Name</mat-label>
           <input type="text" matInput [formControl]="nameFormControl" [attr.errorStateMatcher]="matcher">
-          <mat-error *ngIf="nameFormControl.hasError('required')">name is <strong>required</strong></mat-error>
+          <mat-error *ngIf="nameFormControl.hasError('required')">Nom est <strong>obligatoire</strong></mat-error>
+        </mat-form-field>
+        <mat-form-field style="width: 100%">
+          <mat-label>Key</mat-label>
+          <input type="text" matInput [formControl]="keyFormControl" [attr.errorStateMatcher]="matcher">
+          <mat-error *ngIf="keyFormControl.hasError('required')">Clé est <strong>obligatoire</strong></mat-error>
         </mat-form-field>
       </form>
     </div>
     <div mat-dialog-actions>
-      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button mat-dialog-close>Annuler</button>
       <button mat-button mat-dialog-close cdkFocusInitial (click)="modify()" [disabled]="titleFormControl.hasError('required') || keyFormControl.hasError('required') || nameFormControl.hasError('required')">Confirmer</button>
     </div>
 `,
 })
 export class DialogModifyChampion {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { champion: Champion }, public dialogRef: MatDialogRef<DialogRemoveChampion>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { champion: Champion }, public dialogRef: MatDialogRef<DialogModifyChampion>) { }
   modify() {
     this.dialogRef.close('modify');
   }

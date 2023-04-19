@@ -11,5 +11,5 @@ export class Data implements InMemoryDbService {
     const users: User[] = Object.values(usersData.data);
     return { champions, users };
   }
-
+  
 }

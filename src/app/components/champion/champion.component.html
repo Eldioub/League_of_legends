@@ -5,7 +5,7 @@
                 <section class="table__header">
                     <h1>La liste des champions</h1>
                     <div class="input-group">
-                        <input type="search" placeholder="Recherche globale..." (change)="onSearch($event)">
+                        <input type="search" placeholder="Recherche globale sur titre, nom et clé" [(ngModel)]="textSearch" (ngModelChange)="onSearch()">
                     </div>
                     <div class="export__file">
                         <label for="export-file" class="export__file-btn" title="Exporter Fichier"></label>
@@ -27,6 +27,7 @@
                             [pagination]="true"
                             [paginationPageSize]="20"
                             [suppressCellFocus]="true"
+                            [localeText]="localeText"
                         >
                         </ag-grid-angular>
                 </div>

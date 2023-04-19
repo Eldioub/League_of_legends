@@ -6,12 +6,12 @@ import { Champion } from 'src/app/models/champion';
 @Component({
   selector: 'btn-cell-renderer',
   template: `
+    <button class="btn btn-warning" 
+    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; border-radius:12px; margin-right: .4rem"
+    (click)="modifyClickedHandler()">Modifier</button>
     <button class="btn btn-danger" 
     style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; border-radius:12px"
     (click)="deleteClickedHandler()">Supprimer</button>
-    <button class="btn btn-warning mx-1" 
-    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; border-radius:12px"
-    (click)="modifyClickedHandler()">Modifier</button>
   `,
 })
 export class ButtonRendererComponent implements ICellRendererAngularComp {

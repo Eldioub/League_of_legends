@@ -21,6 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoginComponent } from './components/login/login.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { CreateChampionComponent, DialogModifyIChampion } from './components/create-champion/create-champion.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
     ButtonRendererComponent,
     DialogRemoveChampion,
     DialogModifyChampion,
+    CreateChampionComponent,
+    DialogModifyIChampion
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,8 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
     MatFormFieldModule,
     MatInputModule,
     MatTooltipModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule
   ],
   providers: [
     ChampionService,
