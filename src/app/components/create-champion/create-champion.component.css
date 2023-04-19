@@ -40,6 +40,9 @@
 .cover {
     background-color: #fff4;
     border-radius: .8rem;
+    margin-top: 3rem;
+    width: fit-content;
+    backdrop-filter: blur(0.3px);
 }
 
 .header {
@@ -62,5 +65,5 @@
 }
 
 .form>input {
-    width: 80%;
+    max-width: 80%;
 }
